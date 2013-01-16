@@ -38,8 +38,13 @@ module MCollective
           listblocked.include?(ip)
         end
 
+        # returns an array with members:
+        #
+        #  - true or false indicating success
+        #  - a human readable string of status
+        #  - blocked?(ip)
         def block(ip)
-          raise "#{ip} is already blocked" if blocked?(ip)
+          return([false, "#{ip} is already blocked", true]) if blocked?(ip)
 
           iptables_output = ""
 
@@ -51,14 +56,19 @@ module MCollective
           if blocked
             iptables_output = "#{ip} was blocked" if iptables_output == ""
           else
-            raise "still unblocked, iptables output: '%s'" % iptables_output
+            return([false, "still unblocked, iptables output: '%s'" % iptables_output, true])
           end
 
-          [iptables_output, blocked]
+          [true, iptables_output, blocked]
         end
 
+        # returns an array with members:
+        #
+        #  - true or false indicating success
+        #  - a human readable string of status
+        #  - blocked?(ip)
         def unblock(ip)
-          raise "#{ip} is already unblocked" unless blocked?(ip)
+          return([false, "#{ip} is already unblocked", false]) unless blocked?(ip)
 
           iptables_output = ""
 
@@ -73,7 +83,7 @@ module MCollective
             iptables_output = "#{ip} was unblocked" if iptables_output == ""
           end
 
-          [iptables_output, blocked]
+          [true, iptables_output, blocked]
         end
 
         def parse_iptables_list(output)

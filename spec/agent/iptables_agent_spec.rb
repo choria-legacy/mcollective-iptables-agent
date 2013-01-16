@@ -14,7 +14,7 @@ describe "iptables agent" do
 
   describe "#block" do
     it "should block the request using the manager" do
-      @manager.expects(:block).with("192.168.1.1").returns(["blocked", true])
+      @manager.expects(:block).with("192.168.1.1").returns([true, "blocked", true])
 
       result = @agent.call(:block, :ipaddr => "192.168.1.1")
 
@@ -22,8 +22,8 @@ describe "iptables agent" do
       result.should have_data_items(:output => "blocked", :blocked => true)
     end
 
-    it "should fail on any runtime error" do
-      @manager.expects(:block).with("192.168.1.1").raises("rspec")
+    it "should fail on any error" do
+      @manager.expects(:block).with("192.168.1.1").returns([false, "rspec", true])
 
       result = @agent.call(:block, :ipaddr => "192.168.1.1")
 
@@ -34,7 +34,7 @@ describe "iptables agent" do
 
   describe "#unblock" do
     it "should unblock the request using the manager" do
-      @manager.expects(:unblock).with("192.168.1.1").returns(["unblocked", false])
+      @manager.expects(:unblock).with("192.168.1.1").returns([true, "unblocked", false])
 
       result = @agent.call(:unblock, :ipaddr => "192.168.1.1")
 
@@ -42,8 +42,8 @@ describe "iptables agent" do
       result.should have_data_items(:output => "unblocked", :blocked => false)
     end
 
-    it "should fail on any runtime error" do
-      @manager.expects(:unblock).with("192.168.1.1").raises("rspec")
+    it "should fail on any error" do
+      @manager.expects(:unblock).with("192.168.1.1").returns([false, "rspec", false])
 
       result = @agent.call(:unblock, :ipaddr => "192.168.1.1")
 

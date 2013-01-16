@@ -71,7 +71,7 @@ module MCollective
         describe "#block" do
           it "should fail if the IP is already blocked" do
             @ipv4.expects(:blocked?).with("127.0.0.1").returns(true)
-            expect { @ipv4.block("127.0.0.1") }.to raise_error(/is already blocked/)
+            @ipv4.block("127.0.0.1").should == [false, "127.0.0.1 is already blocked", true]
           end
 
           it "should return the correct data on success" do
@@ -81,7 +81,7 @@ module MCollective
 
             @ipv4.expects(:blocked?).with("127.0.0.1").twice.returns(false, true)
 
-            @ipv4.block("127.0.0.1").should == ["127.0.0.1 was blocked", true]
+            @ipv4.block("127.0.0.1").should == [true, "127.0.0.1 was blocked", true]
           end
 
           it "should raise on failure" do
@@ -91,14 +91,14 @@ module MCollective
 
             @ipv4.expects(:blocked?).with("127.0.0.1").twice.returns(false, false)
 
-            expect { @ipv4.block("127.0.0.1") }.to raise_error(/still unblocked/)
+            @ipv4.block("127.0.0.1").should == [false, "still unblocked, iptables output: ''", true]
           end
         end
 
         describe "#unblock" do
           it "should fail if the IP is already unblocked" do
             @ipv4.expects(:blocked?).with("127.0.0.1").returns(false)
-            expect { @ipv4.unblock("127.0.0.1") }.to raise_error(/is already unblocked/)
+            @ipv4.unblock("127.0.0.1").should == [false, "127.0.0.1 is already unblocked", false]
           end
 
           it "should return the correct data on success" do
@@ -108,7 +108,7 @@ module MCollective
 
             @ipv4.expects(:blocked?).with("127.0.0.1").twice.returns(true, false)
 
-            @ipv4.unblock("127.0.0.1").should == ["127.0.0.1 was unblocked", false]
+            @ipv4.unblock("127.0.0.1").should == [true, "127.0.0.1 was unblocked", false]
           end
 
           it "should raise on failure" do

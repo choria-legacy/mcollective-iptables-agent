@@ -25,19 +25,23 @@ class MCollective::Application::Iptables<MCollective::Application
     if configuration[:silent]
       puts "Sent request %s" % iptables.send(configuration[:command], {:ipaddr => configuration[:ipaddress], :process_results => false})
     else
-      iptables.send(configuration[:command], {:ipaddr => configuration[:ipaddress]}).each do |node|
+      results = iptables.send(configuration[:command], {:ipaddr => configuration[:ipaddress]})
+      sender_width = results.map{|s| s[:sender]}.map{|s| s.length}.max + 3
+      pattern = "%%%ds: %%s" % sender_width
+
+      results.each do |node|
         if iptables.verbose
           if node[:data][:output]
-            puts "%40s:  %s" % [node[:sender], node[:data][:output]]
+            puts pattern % [node[:sender], node[:data][:output]]
           else
-            puts "%40s:  %s" % [node[:sender], node[:statusmsg]]
+            puts pattern % [node[:sender], node[:statusmsg]]
           end
         else
           case configuration[:command]
             when "block", "unblock"
-              puts "%40s:  %s" % [node[:sender], node[:statusmsg]] unless node[:statuscode] == 0
+              puts pattern % [node[:sender], node[:statusmsg]] unless node[:statuscode] == 0
             when "isblocked"
-              puts "%40s:  %s" % [node[:sender], node[:data][:blocked]]
+              puts pattern % [node[:sender], node[:data][:blocked]]
             end
         end
       end

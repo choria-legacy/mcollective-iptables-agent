@@ -2,7 +2,7 @@ metadata    :name        => "iptables",
             :description => "An agent that manipulates a specific single chain with iptables and ip6tables",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "ASL 2.0",
-            :version     => "3.0.0",
+            :version     => "3.0.1",
             :url         => "http://projects.puppetlabs.com/projects/mcollective-plugins/wiki",
             :timeout     => 2
 
@@ -25,8 +25,7 @@ requires :mcollective => "2.2.1"
 
         output :blocked,
                :description => "Boolean indication if the IP is blocked or not",
-               :display_as  => "Blocked",
-               :default     => false
+               :display_as  => "Blocked"
 
         summarize do
             aggregate summary(:blocked)

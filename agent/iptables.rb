@@ -16,21 +16,15 @@ module MCollective
       action "block" do
         Log.debug("Blocking IP address '%s'" % request[:ipaddr])
 
-        begin
-          reply[:output], reply[:blocked] = manager_for(request[:ipaddr]).block(request[:ipaddr])
-        rescue RuntimeError => e
-          reply.fail! e.to_s
-        end
+        success, reply[:output], reply[:blocked] = manager_for(request[:ipaddr]).block(request[:ipaddr])
+        reply.fail!(reply[:output]) unless success
       end
 
       action "unblock" do
         Log.debug("Unblocking IP address '%s'" % request[:ipaddr])
 
-        begin
-          reply[:output], reply[:blocked] = manager_for(request[:ipaddr]).unblock(request[:ipaddr])
-        rescue RuntimeError => e
-          reply.fail! e.to_s
-        end
+          success, reply[:output], reply[:blocked] = manager_for(request[:ipaddr]).unblock(request[:ipaddr])
+          reply.fail!(reply[:output]) unless success
       end
 
       action "listblocked" do
