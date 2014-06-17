@@ -1,0 +1,22 @@
+Source: mcollective-iptables
+Homepage: https://github.com/puppetlabs/mcollective-iptables-agent
+Section: utils
+Priority: extra
+Maintainer: Puppet Labs
+Build-Depends: cdbs, debhelper
+Standards-Version: 3.8.0
+
+Package: mcollective-iptables-agent
+Architecture: all
+Depends: mcollective-iptables-common(= ${binary:Version})
+Description: An agent that manipulates a specific single chain with iptables and ip6tables
+
+Package: mcollective-iptables-client
+Architecture: all
+Depends: mcollective-iptables-common(= ${binary:Version})
+Description: An agent that manipulates a specific single chain with iptables and ip6tables
+
+Package: mcollective-iptables-common
+Architecture: all
+Depends: mcollective-common(>= 2.2.1)
+Description: An agent that manipulates a specific single chain with iptables and ip6tables

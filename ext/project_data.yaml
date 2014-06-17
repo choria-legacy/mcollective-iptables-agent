@@ -1,0 +1,18 @@
+---
+project: 'mcollective-iptables'
+author: 'Puppet Labs'
+email: 'info@puppetlabs.com'
+homepage: 'https://github.com/puppetlabs/mcollective-iptables-agent'
+summary: 'An agent that manipulates a specific single chain with iptables and ip6tables'
+description: 'An agent that manipulates a specific single chain with iptables and ip6tables'
+# files and gem_files are space separated lists
+files:
+  - agent
+  - application
+  - ext
+  - util
+  - validator
+# List of packaging related templates to evaluate before the tarball is packed
+templates:
+  - "ext/redhat/mcollective-iptables.spec.erb"
+  - "ext/debian/changelog.erb"
