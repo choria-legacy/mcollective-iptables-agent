@@ -2,7 +2,7 @@ metadata    :name        => "iptables",
             :description => "An agent that manipulates a specific single chain with iptables and ip6tables",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "ASL 2.0",
-            :version     => "3.0.1",
+            :version     => "3.0.2",
             :url         => "http://projects.puppetlabs.com/projects/mcollective-plugins/wiki",
             :timeout     => 2
 
